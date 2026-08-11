@@ -4,4 +4,6 @@ List of skills from skill.sh
 - frontend-design
 - grill-me 
 - web-design-guidelines
-
+- improve-codebase-architecture
+- vercel-react-best-practices
+- skill-creator
