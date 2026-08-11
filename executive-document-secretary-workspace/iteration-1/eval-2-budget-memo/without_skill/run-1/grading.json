@@ -1,0 +1,13 @@
+{
+  "expectations": [
+    {"text": "The memorandum contains Date, To, From, Subject, the requested approval, Elena Park's signature block, and the CC recipient with all supplied names and titles preserved.", "passed": true, "evidence": "The memo heading, request, signature, and CC line preserve the supplied names and titles."},
+    {"text": "The budget includes exactly the five supplied line items and reconciles to USD 7,400 without invented costs.", "passed": true, "evidence": "All five supplied items are present and total 7,400."},
+    {"text": "The response includes a Format basis after the draft with at least one credible source title, URL, access date, and a stated format decision.", "passed": false, "evidence": "No Format basis or research citation appears after the memo."},
+    {"text": "The response presents the requested finished memorandum rather than asking for intake information already supplied.", "passed": true, "evidence": "The response is a finished memorandum."}
+  ],
+  "summary": {"passed": 3, "failed": 1, "total": 4, "pass_rate": 0.75},
+  "execution_metrics": {"total_tool_calls": 0, "errors_encountered": 1, "output_chars": 1210},
+  "timing": {"total_duration_seconds": 0.0},
+  "claims": [{"claim": "Budget totals USD 7,400", "type": "factual", "verified": true, "evidence": "All five amounts sum to 7,400."}],
+  "user_notes_summary": {"uncertainties": ["Local fallback output; independent sub-agent provider failed before execution."], "needs_review": [], "workarounds": ["Run was produced locally and is not an independent model sample."]}
+}

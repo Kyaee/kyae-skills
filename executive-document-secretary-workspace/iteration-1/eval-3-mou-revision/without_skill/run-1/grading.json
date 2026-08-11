@@ -1,0 +1,14 @@
+{
+  "expectations": [
+    {"text": "The MOU preserves the two parties, four free clinics, exact one-year term, each party's responsibilities, one point of contact per party, and written-change requirement.", "passed": true, "evidence": "The baseline retains the parties, clinic count, dates, responsibilities, contacts, and written amendment requirement."},
+    {"text": "The response does not invent funding, privacy, intellectual-property, governing-law, termination-notice, dispute-resolution, witness, or notarization terms.", "passed": false, "evidence": "It invents 30-day termination notice, California governing law, and good-faith dispute negotiation."},
+    {"text": "The response labels the document as a working draft or otherwise states it is not legal advice and recommends qualified legal review before execution.", "passed": false, "evidence": "No working-draft label, legal disclaimer, or legal-review recommendation appears."},
+    {"text": "The response includes a Format basis after the draft with at least two credible sources, URLs, access dates, and supported format decisions.", "passed": false, "evidence": "No Format basis appears."},
+    {"text": "Any unresolved authority, amendment, termination, governing-law, or signature issues appear in review notes separate from the MOU text.", "passed": false, "evidence": "No review notes appear; unresolved terms were inserted into the MOU."}
+  ],
+  "summary": {"passed": 1, "failed": 4, "total": 5, "pass_rate": 0.2},
+  "execution_metrics": {"total_tool_calls": 0, "errors_encountered": 1, "output_chars": 1280},
+  "timing": {"total_duration_seconds": 0.0},
+  "claims": [],
+  "user_notes_summary": {"uncertainties": ["Local fallback output; independent sub-agent provider failed before execution."], "needs_review": ["Invented legal terms require removal and counsel review."], "workarounds": ["Run was produced locally and is not an independent model sample."]}
+}

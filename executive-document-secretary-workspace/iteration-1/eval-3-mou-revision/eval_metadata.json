@@ -1,0 +1,12 @@
+{
+  "eval_id": 3,
+  "eval_name": "mou-fact-preservation",
+  "prompt": "Revise the MOU draft below into a professional final working draft while preserving its facts. Page size: A4. Style: professional black and white. Purpose: document a one-year collaboration to run four free digital-literacy clinics. Sender: Jordan Kim, Program Director, Harbor Learning Center. Recipient: Dana Ruiz, Executive Director, Eastside Public Library. Date: October 1, 2026. Tone: formal and collaborative. Signatories: Jordan Kim for Harbor Learning Center and Dana Ruiz for Eastside Public Library. No CC recipients. Output: plain text. Jurisdiction: California, United States. No funds, personal data, confidential information, or intellectual property will be exchanged. Draft: 'Harbor Learning Center and Eastside Public Library agree to work together from November 1, 2026 through October 31, 2027. Harbor will provide instructors and lesson plans. Eastside will provide rooms, public computers, and registration support. Together they will hold four free clinics. Each organization will name one point of contact. Changes must be agreed in writing.' Research current MOU structure first. Do not invent operational details or legal terms; identify unresolved execution issues separately.",
+  "assertions": [
+    "The MOU preserves the two parties, four free clinics, exact one-year term, each party's responsibilities, one point of contact per party, and written-change requirement.",
+    "The response does not invent funding, privacy, intellectual-property, governing-law, termination-notice, dispute-resolution, witness, or notarization terms.",
+    "The response labels the document as a working draft or otherwise states it is not legal advice and recommends qualified legal review before execution.",
+    "The response includes a Format basis after the draft with at least two credible sources, URLs, access dates, and supported format decisions.",
+    "Any unresolved authority, amendment, termination, governing-law, or signature issues appear in review notes separate from the MOU text."
+  ]
+}

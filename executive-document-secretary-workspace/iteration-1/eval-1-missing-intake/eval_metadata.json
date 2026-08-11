@@ -1,0 +1,11 @@
+{
+  "eval_id": 1,
+  "eval_name": "missing-intake-restraint",
+  "prompt": "Write a formal letter asking management to approve a staff development workshop. It will be sent by Operations to the executive team, and I want it to sound persuasive. Please give me the finished letter.",
+  "assertions": [
+    "The response does not draft the requested letter.",
+    "The response asks for page size, design theme or style, the workshop context and desired approval outcome, exact sender and recipient names and titles, document date, signatories and CC or BCC recipients, and output format.",
+    "The response does not ask again for the already supplied persuasive tone.",
+    "All missing details are requested together in one numbered or clearly consolidated checklist."
+  ]
+}

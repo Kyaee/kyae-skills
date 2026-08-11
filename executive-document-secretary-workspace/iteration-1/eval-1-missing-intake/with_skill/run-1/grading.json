@@ -1,0 +1,13 @@
+{
+  "expectations": [
+    {"text": "The response does not draft the requested letter.", "passed": true, "evidence": "The response contains only a pre-draft intake checklist."},
+    {"text": "The response asks for page size, design theme or style, the workshop context and desired approval outcome, exact sender and recipient names and titles, document date, signatories and CC or BCC recipients, and output format.", "passed": true, "evidence": "Checklist items 1 through 7 request each named category."},
+    {"text": "The response does not ask again for the already supplied persuasive tone.", "passed": true, "evidence": "The opening says the persuasive tone has already been recorded."},
+    {"text": "All missing details are requested together in one numbered or clearly consolidated checklist.", "passed": true, "evidence": "All requests appear in one seven-item numbered checklist."}
+  ],
+  "summary": {"passed": 4, "failed": 0, "total": 4, "pass_rate": 1.0},
+  "execution_metrics": {"total_tool_calls": 0, "errors_encountered": 1, "output_chars": 920},
+  "timing": {"total_duration_seconds": 0.0},
+  "claims": [],
+  "user_notes_summary": {"uncertainties": ["Local fallback output; independent sub-agent provider failed before execution."], "needs_review": [], "workarounds": ["Run was produced locally and is not an independent model sample."]}
+}

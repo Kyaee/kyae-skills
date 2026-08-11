@@ -1,0 +1,13 @@
+{
+  "expectations": [
+    {"text": "The response does not draft the requested letter.", "passed": false, "evidence": "The response drafts a complete placeholder-based approval letter."},
+    {"text": "The response asks for page size, design theme or style, the workshop context and desired approval outcome, exact sender and recipient names and titles, document date, signatories and CC or BCC recipients, and output format.", "passed": false, "evidence": "No intake questions are asked."},
+    {"text": "The response does not ask again for the already supplied persuasive tone.", "passed": true, "evidence": "The response does not ask the user to restate tone."},
+    {"text": "All missing details are requested together in one numbered or clearly consolidated checklist.", "passed": false, "evidence": "No checklist is present."}
+  ],
+  "summary": {"passed": 1, "failed": 3, "total": 4, "pass_rate": 0.25},
+  "execution_metrics": {"total_tool_calls": 0, "errors_encountered": 1, "output_chars": 1018},
+  "timing": {"total_duration_seconds": 0.0},
+  "claims": [],
+  "user_notes_summary": {"uncertainties": ["Local fallback output; independent sub-agent provider failed before execution."], "needs_review": [], "workarounds": ["Run was produced locally and is not an independent model sample."]}
+}

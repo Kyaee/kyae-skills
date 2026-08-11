@@ -1,9 +1,9 @@
 List of skills from skill.sh
 
+- executive-document-secretary
 - find-skills
 - frontend-design
-- grill-me 
-- web-design-guidelines
-- improve-codebase-architecture
-- vercel-react-best-practices
+- grill-me
 - skill-creator
+- teach
+- web-design-guidelines

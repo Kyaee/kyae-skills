@@ -1,0 +1,13 @@
+{
+  "expectations": [
+    {"text": "The memorandum contains Date, To, From, Subject, the requested approval, Elena Park's signature block, and the CC recipient with all supplied names and titles preserved.", "passed": true, "evidence": "The heading, body, signature, and CC line contain every required field and supplied title."},
+    {"text": "The budget includes exactly the five supplied line items and reconciles to USD 7,400 without invented costs.", "passed": true, "evidence": "The table lists facilitator 3,200; venue 1,500; materials 900; meals 1,200; contingency 600; total 7,400."},
+    {"text": "The response includes a Format basis after the draft with at least one credible source title, URL, access date, and a stated format decision.", "passed": true, "evidence": "Format basis cites George Mason University and Boise State with URLs, August 11, 2026 access dates, and supported memo decisions."},
+    {"text": "The response presents the requested finished memorandum rather than asking for intake information already supplied.", "passed": true, "evidence": "A finished memorandum is presented first with no intake request."}
+  ],
+  "summary": {"passed": 4, "failed": 0, "total": 4, "pass_rate": 1.0},
+  "execution_metrics": {"total_tool_calls": 0, "errors_encountered": 1, "output_chars": 2180},
+  "timing": {"total_duration_seconds": 0.0},
+  "claims": [{"claim": "Budget totals USD 7,400", "type": "factual", "verified": true, "evidence": "3,200 + 1,500 + 900 + 1,200 + 600 = 7,400."}],
+  "user_notes_summary": {"uncertainties": ["Local fallback output; independent sub-agent provider failed before execution."], "needs_review": [], "workarounds": ["Run was produced locally and is not an independent model sample."]}
+}

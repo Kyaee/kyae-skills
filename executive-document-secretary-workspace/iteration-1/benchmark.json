@@ -1,0 +1,329 @@
+{
+  "metadata": {
+    "skill_name": "executive-document-secretary",
+    "skill_path": "/home/kyae-dev/Repos/self/kyae-skills/.agents/skills/executive-document-secretary",
+    "executor_model": "local-orchestrator-fallback-non-independent",
+    "analyzer_model": "local-inline-grading",
+    "timestamp": "2026-08-11T15:55:09Z",
+    "evals_run": [
+      1,
+      2,
+      3
+    ],
+    "runs_per_configuration": 1
+  },
+  "runs": [
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 0.0,
+        "tokens": 920,
+        "tool_calls": 0,
+        "errors": 1
+      },
+      "expectations": [
+        {
+          "text": "The response does not draft the requested letter.",
+          "passed": true,
+          "evidence": "The response contains only a pre-draft intake checklist."
+        },
+        {
+          "text": "The response asks for page size, design theme or style, the workshop context and desired approval outcome, exact sender and recipient names and titles, document date, signatories and CC or BCC recipients, and output format.",
+          "passed": true,
+          "evidence": "Checklist items 1 through 7 request each named category."
+        },
+        {
+          "text": "The response does not ask again for the already supplied persuasive tone.",
+          "passed": true,
+          "evidence": "The opening says the persuasive tone has already been recorded."
+        },
+        {
+          "text": "All missing details are requested together in one numbered or clearly consolidated checklist.",
+          "passed": true,
+          "evidence": "All requests appear in one seven-item numbered checklist."
+        }
+      ],
+      "notes": [
+        "Local fallback output; independent sub-agent provider failed before execution.",
+        "Run was produced locally and is not an independent model sample."
+      ]
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 0.0,
+        "tokens": 2180,
+        "tool_calls": 0,
+        "errors": 1
+      },
+      "expectations": [
+        {
+          "text": "The memorandum contains Date, To, From, Subject, the requested approval, Elena Park's signature block, and the CC recipient with all supplied names and titles preserved.",
+          "passed": true,
+          "evidence": "The heading, body, signature, and CC line contain every required field and supplied title."
+        },
+        {
+          "text": "The budget includes exactly the five supplied line items and reconciles to USD 7,400 without invented costs.",
+          "passed": true,
+          "evidence": "The table lists facilitator 3,200; venue 1,500; materials 900; meals 1,200; contingency 600; total 7,400."
+        },
+        {
+          "text": "The response includes a Format basis after the draft with at least one credible source title, URL, access date, and a stated format decision.",
+          "passed": true,
+          "evidence": "Format basis cites George Mason University and Boise State with URLs, August 11, 2026 access dates, and supported memo decisions."
+        },
+        {
+          "text": "The response presents the requested finished memorandum rather than asking for intake information already supplied.",
+          "passed": true,
+          "evidence": "A finished memorandum is presented first with no intake request."
+        }
+      ],
+      "notes": [
+        "Local fallback output; independent sub-agent provider failed before execution.",
+        "Run was produced locally and is not an independent model sample."
+      ]
+    },
+    {
+      "eval_id": 3,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 0.0,
+        "tokens": 2800,
+        "tool_calls": 0,
+        "errors": 1
+      },
+      "expectations": [
+        {
+          "text": "The MOU preserves the two parties, four free clinics, exact one-year term, each party's responsibilities, one point of contact per party, and written-change requirement.",
+          "passed": true,
+          "evidence": "Sections 1 through 7 preserve each supplied fact and commitment."
+        },
+        {
+          "text": "The response does not invent funding, privacy, intellectual-property, governing-law, termination-notice, dispute-resolution, witness, or notarization terms.",
+          "passed": true,
+          "evidence": "The draft states the supplied no-exchange scope and leaves termination, governing law, and related terms to review notes without adding clauses."
+        },
+        {
+          "text": "The response labels the document as a working draft or otherwise states it is not legal advice and recommends qualified legal review before execution.",
+          "passed": true,
+          "evidence": "The title says WORKING DRAFT; review notes say it is not legal advice and recommend qualified California counsel."
+        },
+        {
+          "text": "The response includes a Format basis after the draft with at least two credible sources, URLs, access dates, and supported format decisions.",
+          "passed": true,
+          "evidence": "Format basis cites Oregon DOJ and Texas DFPS with URLs, August 11, 2026 access dates, and decisions supported by each."
+        },
+        {
+          "text": "Any unresolved authority, amendment, termination, governing-law, or signature issues appear in review notes separate from the MOU text.",
+          "passed": true,
+          "evidence": "A separate REVIEW NOTES section lists signature authority, amendment, termination, governing law, and routing."
+        }
+      ],
+      "notes": [
+        "Local fallback output; independent sub-agent provider failed before execution.",
+        "The MOU requires qualified legal and organizational review before execution.",
+        "Run was produced locally and is not an independent model sample."
+      ]
+    },
+    {
+      "eval_id": 1,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.25,
+        "passed": 1,
+        "failed": 3,
+        "total": 4,
+        "time_seconds": 0.0,
+        "tokens": 1018,
+        "tool_calls": 0,
+        "errors": 1
+      },
+      "expectations": [
+        {
+          "text": "The response does not draft the requested letter.",
+          "passed": false,
+          "evidence": "The response drafts a complete placeholder-based approval letter."
+        },
+        {
+          "text": "The response asks for page size, design theme or style, the workshop context and desired approval outcome, exact sender and recipient names and titles, document date, signatories and CC or BCC recipients, and output format.",
+          "passed": false,
+          "evidence": "No intake questions are asked."
+        },
+        {
+          "text": "The response does not ask again for the already supplied persuasive tone.",
+          "passed": true,
+          "evidence": "The response does not ask the user to restate tone."
+        },
+        {
+          "text": "All missing details are requested together in one numbered or clearly consolidated checklist.",
+          "passed": false,
+          "evidence": "No checklist is present."
+        }
+      ],
+      "notes": [
+        "Local fallback output; independent sub-agent provider failed before execution.",
+        "Run was produced locally and is not an independent model sample."
+      ]
+    },
+    {
+      "eval_id": 2,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.75,
+        "passed": 3,
+        "failed": 1,
+        "total": 4,
+        "time_seconds": 0.0,
+        "tokens": 1210,
+        "tool_calls": 0,
+        "errors": 1
+      },
+      "expectations": [
+        {
+          "text": "The memorandum contains Date, To, From, Subject, the requested approval, Elena Park's signature block, and the CC recipient with all supplied names and titles preserved.",
+          "passed": true,
+          "evidence": "The memo heading, request, signature, and CC line preserve the supplied names and titles."
+        },
+        {
+          "text": "The budget includes exactly the five supplied line items and reconciles to USD 7,400 without invented costs.",
+          "passed": true,
+          "evidence": "All five supplied items are present and total 7,400."
+        },
+        {
+          "text": "The response includes a Format basis after the draft with at least one credible source title, URL, access date, and a stated format decision.",
+          "passed": false,
+          "evidence": "No Format basis or research citation appears after the memo."
+        },
+        {
+          "text": "The response presents the requested finished memorandum rather than asking for intake information already supplied.",
+          "passed": true,
+          "evidence": "The response is a finished memorandum."
+        }
+      ],
+      "notes": [
+        "Local fallback output; independent sub-agent provider failed before execution.",
+        "Run was produced locally and is not an independent model sample."
+      ]
+    },
+    {
+      "eval_id": 3,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.2,
+        "passed": 1,
+        "failed": 4,
+        "total": 5,
+        "time_seconds": 0.0,
+        "tokens": 1280,
+        "tool_calls": 0,
+        "errors": 1
+      },
+      "expectations": [
+        {
+          "text": "The MOU preserves the two parties, four free clinics, exact one-year term, each party's responsibilities, one point of contact per party, and written-change requirement.",
+          "passed": true,
+          "evidence": "The baseline retains the parties, clinic count, dates, responsibilities, contacts, and written amendment requirement."
+        },
+        {
+          "text": "The response does not invent funding, privacy, intellectual-property, governing-law, termination-notice, dispute-resolution, witness, or notarization terms.",
+          "passed": false,
+          "evidence": "It invents 30-day termination notice, California governing law, and good-faith dispute negotiation."
+        },
+        {
+          "text": "The response labels the document as a working draft or otherwise states it is not legal advice and recommends qualified legal review before execution.",
+          "passed": false,
+          "evidence": "No working-draft label, legal disclaimer, or legal-review recommendation appears."
+        },
+        {
+          "text": "The response includes a Format basis after the draft with at least two credible sources, URLs, access dates, and supported format decisions.",
+          "passed": false,
+          "evidence": "No Format basis appears."
+        },
+        {
+          "text": "Any unresolved authority, amendment, termination, governing-law, or signature issues appear in review notes separate from the MOU text.",
+          "passed": false,
+          "evidence": "No review notes appear; unresolved terms were inserted into the MOU."
+        }
+      ],
+      "notes": [
+        "Local fallback output; independent sub-agent provider failed before execution.",
+        "Invented legal terms require removal and counsel review.",
+        "Run was produced locally and is not an independent model sample."
+      ]
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "tokens": {
+        "mean": 1966.6667,
+        "stddev": 957.984,
+        "min": 920,
+        "max": 2800
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.4,
+        "stddev": 0.3041,
+        "min": 0.2,
+        "max": 0.75
+      },
+      "time_seconds": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "tokens": {
+        "mean": 1169.3333,
+        "stddev": 135.6515,
+        "min": 1018,
+        "max": 1280
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.60",
+      "time_seconds": "+0.0",
+      "tokens": "+797"
+    }
+  },
+  "notes": [
+    "All configured sub-agent runs failed before producing tokens because the active OMO writing category referenced unavailable opencode/hy3-free; these outputs were produced locally as an explicit fallback.",
+    "The 100% versus 40% scores validate the assertions and show the intended behavioral contrast, but they are not independent evidence of model-level skill improvement.",
+    "The baseline budget memo passed three of four checks; the differentiating requirement was the cited Format basis.",
+    "The assertion about not re-asking for persuasive tone passed in both configurations and is weakly discriminating on its own.",
+    "Time and token comparisons are not meaningful for local fallback runs; the token field contains output-character proxies supplied by grading metadata."
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "eval_id": 2,
+  "eval_name": "researched-budget-memo",
+  "prompt": "Prepare a final budget-request memorandum. Page size: Letter. Style: professional black and white. Purpose: request approval for a two-day records-management workshop for 20 Operations staff so the department can meet its 2026 retention-policy rollout; requested action is approval of USD 7,400. Sender: Elena Park, Director of Operations, Northstar Community Services. Recipient: Marcus Lee, Chief Financial Officer, Northstar Community Services. Document date: September 15, 2026. Tone: formal and persuasive. Signatory: Elena Park, Director of Operations. CC: Priya Shah, Human Resources Manager. Output: Markdown. Budget: facilitator USD 3,200; venue USD 1,500; materials USD 900; meals USD 1,200; contingency USD 600. No organization template is available. Research the current professional memorandum format before drafting and provide the finished document."
+}
