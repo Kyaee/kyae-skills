@@ -7,3 +7,4 @@ List of skills from skill.sh
 - improve-codebase-architecture
 - vercel-react-best-practices
 - skill-creator
+- ai-no-slop
