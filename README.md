@@ -8,6 +8,7 @@ List of skills from skill.sh
 - skill-creator
 - teach
 - web-design-guidelines
+- ai-no-slop
 
 Canonical paths:
 
