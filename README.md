@@ -23,10 +23,12 @@ Reproducible global installation:
 
 ```sh
 mkdir -p "$HOME/.agents/skills" "$HOME/.config/opencode/commands"
-ln -sfn "/home/kyae-dev/Repos/self/kyae-skills/.agents/skills/eod" "$HOME/.agents/skills/eod"
-ln -sfn "/home/kyae-dev/Repos/self/kyae-skills/.agents/commands/eod.md" "$HOME/.config/opencode/commands/eod.md"
-ln -sfn "/home/kyae-dev/Repos/self/kyae-skills/.agents/skills/qa-ticket" "$HOME/.agents/skills/qa-ticket"
-ln -sfn "/home/kyae-dev/Repos/self/kyae-skills/.agents/commands/qa-ticket.md" "$HOME/.config/opencode/commands/qa-ticket.md"
+Make sure to rename the brackets based on your own folder
+```bash
+ln -sfn "{your-folder}/.agents/skills/eod" "$HOME/.agents/skills/eod"
+ln -sfn "{your-folder}/Repos/self/kyae-skills/.agents/commands/eod.md" "$HOME/.config/opencode/commands/eod.md"
+ln -sfn "{your-folder}/Repos/self/kyae-skills/.agents/skills/qa-ticket" "$HOME/.agents/skills/qa-ticket"
+ln -sfn "{your-folder}/kyae-dev/Repos/self/kyae-skills/.agents/commands/qa-ticket.md" "$HOME/.config/opencode/commands/qa-ticket.md"
 ```
 
 Restart OpenCode after installation, or after source changes that need rediscovery.
