@@ -1,17 +1,17 @@
 ---
 name: eod
-description: End-of-day report generation for OpenCode work logs. Use when the user asks for an EOD report, daily summary, evidence-based progress report, what they did today, or a report from OpenCode sessions for a specific date, timezone, or project path.
+description: End-of-day report generation from Codex and OpenCode work logs. Use when the user asks for an EOD report, daily summary, evidence-based progress report, what they did today, or a report for a specific date, timezone, or project path.
 ---
 
 # EOD
 
-Generate an evidence-based end-of-day report from OpenCode session data and related read-only Git evidence.
+Generate an evidence-based end-of-day report from Codex and OpenCode session data and related read-only Git evidence.
 
 Do not guess. Do not inflate. If the evidence is thin, say so.
 
 ## What this skill does
 
-This skill collects OpenCode session metadata, persisted todos, transcript evidence, and read-only Git context for a single local calendar day. It separates evidence collection from synthesis, then produces a concise Markdown report.
+This skill collects Codex and OpenCode session metadata, persisted todos, transcript evidence, and read-only Git context for a single local calendar day. It separates evidence collection from synthesis, then produces a concise Markdown report.
 
 Use the environment or user timezone by default. If neither is available, use `Asia/Singapore`.
 
@@ -41,7 +41,7 @@ Interpretation rules:
 
 If no date is supplied, use the current local date in the resolved timezone.
 
-If no project is supplied, include all projects discovered in the matching OpenCode sessions.
+If no project is supplied, include all projects discovered in matching Codex and OpenCode sessions.
 
 If `write=<path>` is absent, return the report in chat only.
 
@@ -69,18 +69,48 @@ Follow this workflow in order. Do not skip steps.
 4. Compute the exact local-day window and the matching UTC instants.
 5. Record the resolved date, timezone, offsets, and window before collecting evidence.
 
-### Phase 2: Collect session candidates
+### Phase 2: Collect OpenCode session candidates
 
 Prefer native OpenCode data.
 
-1. Query OpenCode session metadata with `opencode db --format json`.
+1. Query OpenCode session metadata with `opencode db "SELECT ..." --format json`.
 2. The session filter must use `time_updated >= start_ms AND time_updated < end_ms`.
 3. Include archived sessions. Do not silently exclude them.
 4. If `project=<path>` is supplied, keep only sessions whose `directory` matches one of those project paths.
 5. Collect session fields including `id`, `parent_id`, `directory`, `title`, `agent`, `model`, `time_created`, and `time_updated`.
 6. Collect persisted todos for candidate sessions from the same native source.
 
-### Phase 3: Build session trees
+`opencode db --format json` without a SQL query opens an interactive shell; never use it for collection. Compute the epoch bounds first, then pass a read-only query as the positional argument. The installed schema stores session metadata in `session` and todos in `todo`:
+
+```sh
+opencode db "SELECT id, parent_id, directory, title, agent, model, time_created, time_updated, time_archived
+  FROM session
+  WHERE time_updated >= START_MS AND time_updated < END_MS
+  ORDER BY time_created, id" --format json
+
+opencode db "SELECT t.session_id, t.content, t.status, t.priority, t.position, t.time_created, t.time_updated
+  FROM todo AS t
+  INNER JOIN session AS s ON s.id = t.session_id
+  WHERE s.time_updated >= START_MS AND s.time_updated < END_MS
+  ORDER BY s.time_created, s.id, t.position" --format json
+```
+
+Replace `START_MS` and `END_MS` with decimal epoch-millisecond values, not user-provided SQL. For each `project=<path>`, add `AND directory IN (...)` to the session query and `AND s.directory IN (...)` to the todo query. Quote each path as a SQLite string literal, escaping a single quote as two single quotes. If Phase 3 needs an out-of-window root session, fetch it by its already-discovered ID with a separate `WHERE id IN (...)` query; do not widen the day filter.
+
+### Phase 3: Collect Codex session candidates
+
+Codex rollout transcripts are an additional native evidence source. Read them when available; an EOD for a specific date must not depend only on OpenCode records.
+
+1. Derive the UTC calendar date or dates that overlap the resolved local-day window.
+2. Find candidate `rollout-*.jsonl` files beneath `~/.codex/sessions/` by searching for a top-level record timestamp prefix such as `"timestamp":"2026-08-27T`. Directory and filename dates are discovery hints only; select evidence by each record's ISO-8601 `timestamp` after parsing it.
+3. For a candidate, read its `session_meta` record even if that record is outside the window. Record `payload.session_id`, `payload.id`, `payload.parent_thread_id`, and `payload.cwd` when present. Use `session_id` as the thread identifier and retain `id` as a child or subagent identifier.
+4. Retain only `event_msg`, `turn_context`, and `response_item` records whose top-level timestamp falls inside `[start, end)`. A session with metadata but no in-window records is not a matching Codex session.
+5. If `project=<path>` is supplied, retain a Codex session only when its recorded `cwd` exactly matches a supplied project path. A missing `cwd` does not match the filter.
+6. Deduplicate by transcript path and thread identifier. Group child or subagent records under `parent_thread_id` or `session_id` when available, and do not count a thread twice.
+
+Do not treat `~/.codex/memories/MEMORY.md` or rollout summaries as proof of completed work. They may locate a transcript, but the matching JSONL record is the evidence source. Do not scan or quote Codex base instructions, developer instructions, skill definitions, approval policies, or tool schemas. Do not reproduce secrets or raw sensitive command arguments from a transcript.
+
+### Phase 4: Build session trees
 
 1. Deduplicate sessions by session ID.
 2. Group child and subagent sessions under their root session using `parent_id`.
@@ -88,14 +118,16 @@ Prefer native OpenCode data.
 4. Preserve child relationships explicitly in the evidence ledger.
 5. Do not count the same session twice.
 
-### Phase 4: Collect transcript evidence
+### Phase 5: Collect transcript evidence
 
 1. For each distinct session ID, use `opencode export <session-id>` for transcript detail.
 2. Prefer transcript lines and tool results over summaries or titles.
 3. Extract user-visible outcomes, decisions, blockers, validation commands, and warnings.
 4. Include persisted todos as evidence inputs, but never let a todo alone prove user-facing completion.
+5. For each matching Codex transcript, use in-window `response_item` messages and tool results as context. Treat a successful tool result, a visible validation result, or a final assistant handoff as evidence; a user request, assistant plan, title, or system context alone is not proof of completion.
+6. Cite Codex evidence with its thread ID and rollout filename. Use the record ordinal when it is needed to distinguish multiple claims from the same transcript.
 
-### Phase 5: Collect Git context
+### Phase 6: Collect Git context
 
 1. For each distinct session directory, locate the nearest Git root if one exists.
 2. Deduplicate Git roots across directories.
@@ -106,7 +138,7 @@ Prefer native OpenCode data.
 4. Treat Git status as current state only, not proof that work happened that day.
 5. Record commit hashes and short subjects. Use commit author time for inclusion.
 
-### Phase 6: Build the evidence ledger
+### Phase 7: Build the evidence ledger
 
 Capture raw facts before writing prose. At minimum record:
 
@@ -116,6 +148,7 @@ Capture raw facts before writing prose. At minimum record:
 - session IDs
 - root and child relationships
 - directories
+- Codex thread IDs, child IDs, rollout paths, and in-window record ordinals
 - todo states and source order
 - Git roots
 - branches
@@ -126,15 +159,15 @@ Capture raw facts before writing prose. At minimum record:
 
 Keep collection separate from synthesis. Do not write the final report until the ledger is complete.
 
-### Phase 7: Synthesize the report
+### Phase 8: Synthesize the report
 
-Map evidence into the output sections using the hierarchy below. If evidence conflicts, prefer the stronger source and mention the conflict in `Warnings`.
+Map evidence into the output sections using the hierarchy below. If evidence conflicts, prefer the stronger source; omit the claim when the conflict cannot be resolved.
 
 ## Evidence hierarchy
 
 Rank evidence from strongest to weakest:
 
-1. Transcript evidence or tool result showing the outcome, or a committed diff in the day window
+1. Codex or OpenCode transcript evidence or tool result showing the outcome, or a committed diff in the day window
 2. Completed todo corroborated by transcript evidence or Git evidence
 3. Current working tree state
 4. Session title only
@@ -144,7 +177,7 @@ Rules:
 - Never call title-only evidence completed work.
 - Never present a completed todo as a shipped outcome unless transcript or Git evidence backs it.
 - Use current working tree only to describe present state, active work, or possible next steps.
-- If a claim is supported only by weak evidence, downgrade it to `In progress`, `Warnings`, or `Sources`.
+- If a claim is supported only by weak evidence, omit it from `Completed`. Put it in `Next` only when there is an explicit, evidence-backed next action.
 
 ## Classification rules
 
@@ -152,25 +185,9 @@ Rules:
 
 Put an item in `Completed` only when the evidence shows a user-facing outcome, a concrete fix, a merged or committed change in scope, or a clearly finished task backed by transcript or Git evidence.
 
-### In progress
+### Next
 
-Use for work that was started, explored, drafted, debugged, or partially validated but not proven complete.
-
-### Decisions
-
-Use for explicit technical or process choices visible in transcripts, tool outputs, or commits.
-
-### Blockers
-
-Use for explicit blockers, failures, waiting states, missing inputs, or unresolved defects documented in evidence.
-
-### Tomorrow
-
-Use only for next actions grounded in explicit todos, stated next steps, unresolved blockers, or current working tree evidence.
-
-### Validation
-
-Include commands and outcomes that were actually run, with pass or fail state when visible.
+Use only for explicit todos, stated next steps, unresolved blockers, or current working tree evidence. Do not add generic follow-up work.
 
 ## Ordering rules
 
@@ -179,8 +196,9 @@ Reruns for the same date must use the same selection and ordering rules:
 1. Projects by Git root path when present, otherwise by session directory path
 2. Root sessions by `time_created`, then session ID
 3. Child sessions by `time_created`, then session ID
-4. Commits by author time, then commit hash
-5. Todos in source order
+4. Codex threads by first in-window record timestamp, then rollout path
+5. Commits by author time, then commit hash
+6. Todos in source order
 
 Do not reorder for narrative effect.
 
@@ -191,45 +209,18 @@ Return concise Markdown with these sections, in this order:
 ```markdown
 # EOD - YYYY-MM-DD
 
-## Evidence window
-
 ## Completed
 
-## In progress
-
-## Decisions
-
-## Blockers
-
-## Tomorrow
-
-## Validation
-
-## Sources
-
-## Warnings
+## Next
 ```
 
 Rules:
 
-- Always include `Evidence window` and `Sources`.
-- Omit any other section that would be empty.
-- Cite session IDs inline.
-- Cite commit hashes inline.
+- Always include `Completed`.
+- Include `Next` only when there is at least one evidence-backed action.
+- Keep citations, validation details, and uncertainty in the evidence ledger rather than adding report sections.
 - If no evidence exists, say so plainly and do not invent work.
 - Keep the report concise.
-
-## Sources section requirements
-
-List the concrete evidence inputs used to build the report, such as:
-
-- root sessions and child sessions by ID
-- project directories
-- Git roots
-- commit hashes
-- validation command snippets
-
-Make it easy to audit every claim.
 
 ## Safety constraints
 
@@ -253,13 +244,14 @@ Only write the final report to disk when `write=<path>` is explicit. Otherwise r
 
 ## Preferred native commands
 
-Prefer native OpenCode evidence in this order:
+Prefer native evidence in this order:
 
-1. `opencode db --format json` for session and todo metadata
-2. `opencode export <session-id>` for transcript detail
-3. read-only Git inspection for branch, status, and commits
+1. matching `~/.codex/sessions/**/rollout-*.jsonl` records for Codex context
+2. `opencode db "SELECT ..." --format json` for OpenCode session and todo metadata; every database collection command must include a read-only SQL query
+3. `opencode export <session-id>` for OpenCode transcript detail
+4. read-only Git inspection for branch, status, and commits
 
-If a weaker fallback is ever needed, label it clearly in `Warnings`.
+If a weaker fallback is ever needed, do not use it as proof of completion.
 
 ## Failure behavior
 
@@ -267,7 +259,7 @@ If data is missing, incomplete, or contradictory:
 
 1. keep the strongest surviving evidence
 2. downgrade uncertain claims
-3. explain the gap in `Warnings`
+3. include a next action only when the evidence explicitly provides one
 4. never fill gaps with inference presented as fact
 
-If there are zero matching sessions and zero matching commits, produce a short report that says no evidence was found for the resolved window.
+If there are zero matching Codex sessions, zero matching OpenCode sessions, and zero matching commits, produce a short report that says no evidence was found for the resolved window.
