@@ -1,58 +1,43 @@
-List of skills from skill.sh
+# kyae-skills
 
-- executive-document-secretary
-- eod
-- find-skills
-- frontend-design
-- grill-me
-- anthony
-- qa-ticket
-- skill-creator
-- teach
-- web-design-guidelines
-- ai-no-slop
+OpenCode skills and slash commands for daily reports, Linear tickets, QA handoff, and focused development workflows.
 
-Canonical paths:
+## Install
 
-- Skill: `.agents/skills/eod/SKILL.md`
-- Command: `.agents/commands/eod.md`
-- Skill: `.agents/skills/qa-ticket/SKILL.md`
-- Tests: `.agents/skills/qa-ticket/TESTS.md`
-- Command: `.agents/commands/qa-ticket.md`
-- Skill: `.agents/skills/anthony/SKILL.md`
-- Tests: `.agents/skills/anthony/TESTS.md`
-- Command: `.agents/commands/anthony.md`
-
-Reproducible global installation:
+Copy and run this in a terminal. It installs every skill and command, then OpenCode discovers them after a restart.
 
 ```sh
+mkdir -p "$HOME/Repos/self"
+git clone https://github.com/Kyaee/kyae-skills.git "$HOME/Repos/self/kyae-skills"
+cd "$HOME/Repos/self/kyae-skills"
+
 mkdir -p "$HOME/.agents/skills" "$HOME/.config/opencode/commands"
-Make sure to rename the brackets based on your own folder
-```bash
-ln -sfn "{your-folder}/.agents/skills/eod" "$HOME/.agents/skills/eod"
-ln -sfn "{your-folder}/Repos/self/kyae-skills/.agents/commands/eod.md" "$HOME/.config/opencode/commands/eod.md"
-ln -sfn "{your-folder}/Repos/self/kyae-skills/.agents/skills/qa-ticket" "$HOME/.agents/skills/qa-ticket"
-ln -sfn "{your-folder}/kyae-dev/Repos/self/kyae-skills/.agents/commands/qa-ticket.md" "$HOME/.config/opencode/commands/qa-ticket.md"
-ln -sfn "{your-folder}/Repos/self/kyae-skills/.agents/skills/anthony" "$HOME/.agents/skills/anthony"
-ln -sfn "{your-folder}/Repos/self/kyae-skills/.agents/commands/anthony.md" "$HOME/.config/opencode/commands/anthony.md"
+repo_dir="$PWD"
+
+for skill_file in .agents/skills/*/SKILL.md; do
+  [ -f "$skill_file" ] || continue
+  skill_dir="${skill_file%/SKILL.md}"
+  ln -sfn "$repo_dir/$skill_dir" "$HOME/.agents/skills/$(basename "$skill_dir")"
+done
+
+for command_file in .agents/commands/*.md; do
+  [ -f "$command_file" ] || continue
+  ln -sfn "$repo_dir/$command_file" "$HOME/.config/opencode/commands/$(basename "$command_file")"
+done
 ```
 
-Restart OpenCode after installation, or after source changes that need rediscovery.
+Restart OpenCode after installation. Later updates only need `git pull` and an OpenCode restart.
 
-`/qa-ticket` targets the `qa-ticket` skill for the `Quality Assurance` team. Preview is the default. Explicit `create` is the Linear side effect.
+## Commands
 
-`/anthony` targets the `anthony` skill. Invocation is an external side effect when the request data is adequate. The skill assigns the requester, resolves an existing current or next cycle, uses existing team metadata, asks one consolidated question only when material details cannot be inferred safely, and then creates the Linear issue without a separate confirmation step.
+| Command | Use |
+| --- | --- |
+| `/eod` | Evidence-based end-of-day report from Codex and OpenCode sessions. |
+| `/anthony <request>` | Create a Linear issue with team, requester, cycle, and acceptance criteria. |
+| `/qa-ticket <issue>` | Prepare a QA child issue from a parent issue and PR evidence. |
 
-Examples:
+The repository also includes skills for frontend design, documentation, teaching, code review, and skill authoring. Read each `SKILL.md` for its scope.
 
-```text
-/eod
-/eod 2026-08-15
-/eod 2026-08-15 timezone=Asia/Singapore write=/tmp/eod-2026-08-15.md
-/qa-ticket QO-60
-/qa-ticket QO-60 pr=https://github.com/Quanby-OJT/PMDv2/pull/5
-/qa-ticket QO-60 create
-/anthony delayed delivery status visibility for order screen
-/anthony stock discrepancy follow-up team=Operations urgency=high
-/anthony stock discrepancy follow-up team=Operations
-```
+## Develop
+
+Edit the files under `.agents/`, then restart OpenCode to load the change.
