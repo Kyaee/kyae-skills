@@ -3,7 +3,7 @@
 This repository contains two skill packs:
 
 - **GStack**, vendored as `.agents/skills/gstack`. It supplies engineering, design, QA, release, browser, security, and iOS workflows.
-- **Kyae Skills**, the first-level directories in `.agents/skills/`. They add local workflows for Linear, end-of-day reporting, formal documents, teaching, and frontend work.
+- **Kyae Skills**, the first-level directories in `.agents/skills/`. They add local workflows for Linear, end-of-day reporting, formal documents, teaching, frontend work, technical spikes, writing, and Todoist diary sync.
 
 GStack is installed for a specific coding-agent host. Kyae Skills are linked from this checkout so they can be kept under version control and updated with `git pull`.
 
@@ -214,13 +214,20 @@ The names below assume `--prefix`. If you chose `--no-prefix`, remove `gstack-`.
 | `/anthony` | Create a well-scoped Linear issue with team, requester, cycle, and acceptance criteria. |
 | `/eod` | Produce an evidence-based end-of-day report from Codex and OpenCode records. |
 | `/qa-ticket` | Prepare a QA child issue from a Linear parent issue and pull-request evidence. |
+| `create-technical-spike` | Create a time-boxed research document for a technical decision, with findings and follow-up actions. |
 | `executive-document-secretary` | Draft or revise formal workplace, administrative, or institutional documents. |
 | `find-skills` | Find or install a skill for a capability you need. |
 | `frontend-design` | Design a distinctive, intentional interface rather than a default-looking UI. |
 | `grill-me` | Pressure-test a plan or design through a direct interview. |
+| `grill-with-docs` | Pressure-test a plan or design while documenting decisions and domain terms. |
+| `no-ai-slop` | Edit prose using concrete claims, plain wording, and examples of writing to avoid. |
+| `rossmann-voice` | Write prose using Louis Rossmann's style, with specific evidence and varied sentence lengths. |
 | `skill-creator` | Create, revise, evaluate, or optimize a skill. |
 | `teach` | Learn a concept or workflow within the active workspace. |
+| `todoist-diary-sync` | Update Todoist tasks and mirror the resulting task data into today's diary. |
 | `web-design-guidelines` | Audit UI code for web-interface and accessibility best practices. |
+
+`grill-with-docs` calls the separate `/grilling` and `/domain-modeling` skills. `todoist-diary-sync` needs Todoist tools and the existing `/read-diary` workflow. Those dependencies must be available in the host workspace; they are not bundled with these skills.
 
 ## Update and troubleshoot
 

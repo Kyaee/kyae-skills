@@ -24,7 +24,7 @@ Replace `codex` with `opencode`, `cursor`, `factory`, `kiro`, or `claude` as nee
 | `/anthony <request>` | Create a Linear issue with team, requester, cycle, and acceptance criteria. |
 | `/qa-ticket <issue>` | Prepare a QA child issue from a parent issue and PR evidence. |
 
-The repository also includes skills for frontend design, documentation, teaching, code review, and skill authoring. The full list is in [the guide](docs/gstack-guide.md#kyae-skills-reference).
+The repository also includes skills for frontend design, documentation, teaching, code review, skill authoring, technical spikes, writing, and Todoist diary sync. The full list is in [the guide](docs/gstack-guide.md#kyae-skills-reference).
 
 ## Develop
 
